@@ -1,0 +1,40 @@
+--- ./keys/Makefile.org2	2006-02-01 15:47:01.000000000 +0100
++++ ./keys/Makefile	2006-02-01 16:01:32.235152224 +0100
+@@ -1,13 +1,14 @@
+ 
+ export
++CC		= gcc
++CFLAGS		+= "-ansi -Wall -Wstrict-prototypes -pedantic"
++LDFLAGS		+= "-lmcrypt"
+ 
+-COMPILE=gcc -c -ansi -Wall -Wstrict-prototypes -pedantic
++COMPILE		= $(CC) -c $(CFLAGS)
++COMPILE_MCRYPT	= $(CC) -g3 $(CFLAGS) $(LDFLAGS)
+ 
+-COMPILE_MCRYPT=gcc -g3 -ansi -Wall -Wstrict-prototypes -pedantic -lmcrypt
+-
+-BUILD=gcc -o
+-
+-BUILD_MCRYPT=gcc -lmcrypt -o
++BUILD		= $(CC) -o
++BUILD_MCRYPT	= $(CC) -o $(LDFLAGS)
+ 
+ gen-keys: gen-keys.c
+ 
+--- ./tools/daemon/Makefile.org2	2006-02-01 15:52:44.000000000 +0100
++++ ./tools/daemon/Makefile	2006-02-01 15:54:07.000000000 +0100
+@@ -31,9 +31,12 @@
+ helo_cmd.o helo_syntax.o lr_cmd.o lr_syntax.o bye_cmd.o bye_syntax.o\
+ query_license_server.o
+ 
+-BUILD = gcc -O2 -ansi -Wall -Wstrict-prototypes -pedantic -o
++CC	= gcc
++CFLAGS	+= "-O2 -ansi -Wall -Wstrict-prototypes -pedantic"
+ 
+-COMPILE = gcc -O2 -ansi -Wall -Wstrict-prototypes -pedantic -c -o
++BUILD = $(CC) $(CFLAGS) -o
++
++COMPILE = $(CC) $(CFLAGS) -c -o
+ 
+ STRIP = strip -s
+ 
