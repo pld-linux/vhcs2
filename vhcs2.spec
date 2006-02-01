@@ -1,17 +1,21 @@
 # TODO:
 # - make pl translation
-# - change Makefile to allow pass proper CC, CFLAGS, etc...
+# - move CC ans CFLAGS definition to main Makefile
+# - configs should be prepared for PLD
+# - some subpackages needs to be made...
 Summary:	vhcs2 - Virtual Hosting Control System
 Summary(pl):	vhcs2 - system kontroli virtualnych hostów
 Name:		vhcs2
 Version:	2.4.7.1
-Release:	0.2
+Release:	0.3
 License:	MPL 1.1
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/vhcs/%{name}-%{version}.tar.bz2
 # Source0-md5:	19d2ddefaa41dd5a6298d3d122af5883
 #Source1:	%{name}.conf
-#Patch0:	%{name}-config.patch
+Patch0:		%{name}-mkdirs_location.patch
+Patch1:		%{name}-build_flags.patch
+Patch2:		%{name}-nostrip_and_noroot.patch
 URL:		http://vhcs.net/
 #BuildRequires:	rpmbuild(macros) >= 1.268
 #Requires(triggerpostun):	sed >= 4.0
@@ -40,19 +44,31 @@ the administrators, resellers and users.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
-# use sed for setting buildroot
+# This is not install, but build...
+%{__make} install \
+	CC="%{__cc}" \
+	CFLAGS="%{rpmcflags} -ansi -Wall -Wstrict-prototypes -pedantic" \
+	INST_PREF=$RPM_BUILD_ROOT \
+	SYSTEM_MAKE_DIRS=$RPM_BUILD_ROOT%{_sbindir}/vhcs2-mkdirs.pl \
+	CMD_INSTALL="install" \
+	CMD_MAIL_INSTALL="install" \
+	CMD_DIR_INSTALL="install -d"
+
 
 # Docs:
 mv -f language-files/README.txt README_language-files.txt
 
 %install
-rm -rf $RPM_BUILD_ROOT
-#install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/{css,lang,libraries/{auth,dbg,dbi,engines,export,import,transformations}}}
+# Don't remove - this package has strange build-install process...
+#rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	INST_PREF=$RPM_BUILD_ROOT
+
+#install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/{css,lang,libraries/{auth,dbg,dbi,engines,export,import,transformations}}}
 
 #install *.php *.html *.css $RPM_BUILD_ROOT%{_appdir}
 #install lang/*.php $RPM_BUILD_ROOT%{_appdir}/lang
