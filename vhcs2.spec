@@ -1,15 +1,17 @@
-Summary:	vhcs2 - Professional Control Panel Software
-Summary(pl):	vhcs2 - profesjonalny panel kontrolny
+# TODO:
+# - make pl translation
+# - change Makefile to allow pass proper CC, CFLAGS, etc...
+Summary:	vhcs2 - Virtual Hosting Control System
+Summary(pl):	vhcs2 - system kontroli virtualnych hostów
 Name:		vhcs2
 Version:	2.4.7.1
-Release:	0.1
-# exact license must be checked - Open Source for sure...
-License:	GPL ??
+Release:	0.2
+License:	MPL 1.1
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/vhcs/%{name}-%{version}.tar.bz2
 # Source0-md5:	19d2ddefaa41dd5a6298d3d122af5883
 #Source1:	%{name}.conf
-#Patch0:		%{name}-config.patch
+#Patch0:	%{name}-config.patch
 URL:		http://vhcs.net/
 #BuildRequires:	rpmbuild(macros) >= 1.268
 #Requires(triggerpostun):	sed >= 4.0
@@ -17,7 +19,6 @@ URL:		http://vhcs.net/
 #Requires:	php-mysql
 #Requires:	php-pcre
 #Requires:	webapps
-BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_appdir	%{_datadir}/%{name}
@@ -26,9 +27,16 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_sysconfdir	%{_webapps}/%{_webapp}
 
 %description
-VHCS delivers a complete hosting automation appliance by offering significant security, total-cost-of-ownership, and performance advantages over competing commercial solutions.
+VHCS delivers a complete hosting automation appliance by offering
+significant security, total-cost-of-ownership, and performance
+advantages over competing commercial solutions.
 
-With VHCS Pro you can configure your server and applications, create user with domains with a few point-and-click operations that take less than a minute. There is no limit to the number of resellers, users and domains that can be created.At the core of VHCS Pro are 3 easy-to-use, Web-based control panels. VHCS provides graphic user interfaces for the administrators, resellers and users.
+With VHCS Pro you can configure your server and applications, create
+user with domains with a few point-and-click operations that take less
+than a minute. There is no limit to the number of resellers, users and
+domains that can be created.At the core of VHCS Pro are 3 easy-to-use,
+Web-based control panels. VHCS provides graphic user interfaces for
+the administrators, resellers and users.
 
 %prep
 %setup -q
@@ -36,9 +44,15 @@ With VHCS Pro you can configure your server and applications, create user with d
 %build
 # use sed for setting buildroot
 
+# Docs:
+mv -f language-files/README.txt README_language-files.txt
+
 %install
 rm -rf $RPM_BUILD_ROOT
 #install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/{css,lang,libraries/{auth,dbg,dbi,engines,export,import,transformations}}}
+
+%{__make} install \
+	INST_PREF=$RPM_BUILD_ROOT
 
 #install *.php *.html *.css $RPM_BUILD_ROOT%{_appdir}
 #install lang/*.php $RPM_BUILD_ROOT%{_appdir}/lang
@@ -76,6 +90,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%doc CHANGELOG README* docs/{Changes*,HOWTO*,README}
 #%doc Documentation.* CREDITS ChangeLog INSTALL README TODO translators.html scripts
 #%dir %attr(750,root,http) %{_sysconfdir}
 #%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
