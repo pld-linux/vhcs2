@@ -1,0 +1,15 @@
+--- ./tools/build/Makefile.org1	2006-02-01 15:32:02.459199064 +0100
++++ ./tools/build/Makefile	2006-02-01 15:37:59.580908312 +0100
+@@ -5,10 +5,10 @@
+ 
+ install:
+ 
+-	$(CMD_INSTALL) ./vhcs2-mkdirs.pl /usr/sbin
++	$(CMD_INSTALL) -D ./vhcs2-mkdirs.pl $(SYSTEM_MAKE_DIRS)
+ 
+ uninstall:
+ 
+-	rm -rf /usr/sbin/vhcs2-mkdirs.pl
++	rm -rf $(SYSTEM_MAKE_DIRS)
+ 
+ 
