@@ -4,7 +4,7 @@
 # - configs should be prepared for PLD
 # - some subpackages needs to be made...
 Summary:	vhcs2 - Virtual Hosting Control System
-Summary(pl):	vhcs2 - system kontroli virtualnych hostów
+Summary(pl):	vhcs2 - system zarz±dzania virtualnymi hostami
 Name:		vhcs2
 Version:	2.4.7.1
 Release:	0.3
@@ -38,9 +38,21 @@ advantages over competing commercial solutions.
 With VHCS Pro you can configure your server and applications, create
 user with domains with a few point-and-click operations that take less
 than a minute. There is no limit to the number of resellers, users and
-domains that can be created.At the core of VHCS Pro are 3 easy-to-use,
-Web-based control panels. VHCS provides graphic user interfaces for
-the administrators, resellers and users.
+domains that can be created. At the core of VHCS Pro are 3
+easy-to-use, Web-based control panels. VHCS provides graphic user
+interfaces for the administrators, resellers and users.
+
+%description -l pl
+VHCS dostarcza pe³ne rozwi±zanie do automatycznego hostingu oferuj±c
+znacz±co lepsze bezpieczeñstwo, ca³kowity koszt wykorzystywania i
+wydajno¶æ ni¿ konkurencyjne rozwi±zania komercyjne.
+
+Przy u¿yciu VHCS Pro mo¿na skonfigurowaæ serwer i aplikacje, stworzyæ
+u¿ytkownika z domenami za pomoc± kilku klikniêæ w czasie poni¿ej
+minuty. Nie ma ograniczeñ co do liczby po¶redników, u¿ytkowników i
+tworzonych domen. Sercem VHCS Pro s± 3 ³atwe w u¿yciu, oparte na WWW
+panele sterowania. VHCS udostêpnia graficzne interfejsy u¿ytkownika
+dla administratorów, po¶redników i u¿ytkowników.
 
 %prep
 %setup -q
@@ -59,14 +71,12 @@ the administrators, resellers and users.
 	CMD_MAIL_INSTALL="install" \
 	CMD_DIR_INSTALL="install -d"
 
-
 # Docs:
 mv -f language-files/README.txt README_language-files.txt
 
 %install
 # Don't remove - this package has strange build-install process...
 #rm -rf $RPM_BUILD_ROOT
-
 
 #install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/{css,lang,libraries/{auth,dbg,dbi,engines,export,import,transformations}}}
 
