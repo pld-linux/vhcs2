@@ -7,12 +7,15 @@ Summary:	vhcs2 - Virtual Hosting Control System
 Summary(pl):	vhcs2 - system zarz±dzania virtualnymi hostami
 Name:		vhcs2
 Version:	2.4.7.1
-Release:	0.3
+Release:	0.4
 License:	MPL 1.1
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/vhcs/%{name}-%{version}.tar.bz2
 # Source0-md5:	19d2ddefaa41dd5a6298d3d122af5883
 #Source1:	%{name}.conf
+# Oficial patches:
+Source10:	http://download.vhcs.net/vhcs_patch_2006-02.05.tar.bz2
+# Source10-md5:	851626b3bf10032e191303a60c62ad50
 Patch0:		%{name}-mkdirs_location.patch
 Patch1:		%{name}-build_flags.patch
 Patch2:		%{name}-nostrip_and_noroot.patch
@@ -59,6 +62,9 @@ dla administratorów, po¶redników i u¿ytkowników.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+
+tar -jxvf %{SOURCE10}
+mv vhcs_patch_2006-02-05/gui/include/login.php gui/include/login.php
 
 %build
 # This is not install, but build...
