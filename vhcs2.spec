@@ -2,12 +2,17 @@
 # - make pl translation
 # - move CC ans CFLAGS definition to main Makefile
 # - configs should be prepared for PLD
-# - some subpackages needs to be made...
+# - finish files section and separate subpackages
+# - webapps support
+# - generate keys on first start, not on build
+# - change manual building and installing with good fixing of their
+#   build system
+%include	/usr/lib/rpm/macros.perl
 Summary:	vhcs2 - Virtual Hosting Control System
 Summary(pl):	vhcs2 - system zarz±dzania virtualnymi hostami
 Name:		vhcs2
 Version:	2.4.7.1
-Release:	0.4
+Release:	0.5
 License:	MPL 1.1
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/vhcs/%{name}-%{version}.tar.bz2
@@ -20,7 +25,8 @@ Patch0:		%{name}-mkdirs_location.patch
 Patch1:		%{name}-build_flags.patch
 Patch2:		%{name}-nostrip_and_noroot.patch
 URL:		http://vhcs.net/
-#BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	rpm-perlprov
+BuildRequires:	rpmbuild(macros) >= 1.268
 #Requires(triggerpostun):	sed >= 4.0
 #Requires:	php
 #Requires:	php-mysql
@@ -28,7 +34,7 @@ URL:		http://vhcs.net/
 #Requires:	webapps
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_appdir	%{_datadir}/%{name}
+%define		_appdir		%{_datadir}/%{name}
 %define		_webapps	/etc/webapps
 %define		_webapp		%{name}
 %define		_sysconfdir	%{_webapps}/%{_webapp}
@@ -67,37 +73,74 @@ tar -jxvf %{SOURCE10}
 mv vhcs_patch_2006-02-05/gui/include/login.php gui/include/login.php
 
 %build
-# This is not install, but build...
-%{__make} install \
+%{__make} -C tools/daemon vhcs2_daemon \
 	CC="%{__cc}" \
-	CFLAGS="%{rpmcflags} -ansi -Wall -Wstrict-prototypes -pedantic" \
-	INST_PREF=$RPM_BUILD_ROOT \
-	SYSTEM_MAKE_DIRS=$RPM_BUILD_ROOT%{_sbindir}/vhcs2-mkdirs.pl \
-	CMD_INSTALL="install" \
-	CMD_MAIL_INSTALL="install" \
-	CMD_DIR_INSTALL="install -d"
+	CFLAGS="%{rpmcflags} -ansi -Wall -Wstrict-prototypes -pedantic"
+
+%{__make} -C keys gen-keys \
+	CC="%{__cc}" \
+	CFLAGS="%{rpmcflags} -ansi -Wall -Wstrict-prototypes -pedantic"
 
 # Docs:
 mv -f language-files/README.txt README_language-files.txt
 
 %install
-# Don't remove - this package has strange build-install process...
-#rm -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_sbindir},/var/log/{%{name},archiv/httpd}} \
+	$RPM_BUILD_ROOT{/var/{lib/%{name},mail/virtual},/etc/init.d} \
+	$RPM_BUILD_ROOT%{_appdir}/{gui,engine/{backup,quota,traffic,messager,setup,tools}}
 
-#install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/{css,lang,libraries/{auth,dbg,dbi,engines,export,import,transformations}}}
+# helper script - needed for building:
+install tools/build/vhcs2-mkdirs.pl $RPM_BUILD_ROOT%{_sbindir}
 
-#install *.php *.html *.css $RPM_BUILD_ROOT%{_appdir}
-#install lang/*.php $RPM_BUILD_ROOT%{_appdir}/lang
-#cp -rf themes $RPM_BUILD_ROOT%{_appdir}
-#install css/* $RPM_BUILD_ROOT%{_appdir}/css
-#install libraries/*.{js,php} $RPM_BUILD_ROOT%{_appdir}/libraries
-#install libraries/auth/*.php $RPM_BUILD_ROOT%{_appdir}/libraries/auth
-#install libraries/dbg/*.php $RPM_BUILD_ROOT%{_appdir}/libraries/dbg
-#install libraries/dbi/*.php $RPM_BUILD_ROOT%{_appdir}/libraries/dbi
-#install libraries/engines/*.php $RPM_BUILD_ROOT%{_appdir}/libraries/engines
-#install libraries/export/*.php $RPM_BUILD_ROOT%{_appdir}/libraries/export
-#install libraries/import/*.php $RPM_BUILD_ROOT%{_appdir}/libraries/import
-#install libraries/transformations/*.php $RPM_BUILD_ROOT%{_appdir}/libraries/transformations
+# daemon binary:
+install tools/daemon/vhcs2_daemon $RPM_BUILD_ROOT%{_sbindir}
+
+# install configów!!!!
+
+# init-scripts for daemons:
+install configs/init.d/vhcs2_{daemon,network} $RPM_BUILD_ROOT/etc/init.d
+
+###############
+### ENGINE:
+# Some scripts:
+install engine/traffic/maillogconvert/maillogconvert.pl $RPM_BUILD_ROOT%{_sbindir}
+install engine/vhcs2_common_code.pl $RPM_BUILD_ROOT/%{_appdir}/engine
+install engine/vhcs2-db-keys.pl $RPM_BUILD_ROOT/%{_appdir}/engine
+install engine/vhcs2-db-keys.pl $RPM_BUILD_ROOT/%{_appdir}/engine/messager
+install engine/*-mngr $RPM_BUILD_ROOT/%{_appdir}/engine
+install engine/vhcs2-db-passwd $RPM_BUILD_ROOT/%{_appdir}/engine
+# Backup scripts:
+install engine/backup/vhcs2-bk-task $RPM_BUILD_ROOT/%{_appdir}/engine/backup
+install engine/backup/vhcs2-backup-all $RPM_BUILD_ROOT/%{_appdir}/engine/tools
+# Quota script:
+install engine/quota/vhcs2-dsk-quota $RPM_BUILD_ROOT/%{_appdir}/engine/quota
+
+install engine/traffic/*traff{,-SUSE} $RPM_BUILD_ROOT/%{_appdir}/engine/traffic
+
+install engine/messager/*-msgr $RPM_BUILD_ROOT/%{_appdir}/engine/messager
+
+# Setup and administration tools:
+install engine/setup/{*.sh,*setup} $RPM_BUILD_ROOT/%{_appdir}/engine/setup
+install engine/tools/vhcs2-httpd-logs-mngr $RPM_BUILD_ROOT/%{_appdir}/engine/tools
+
+###############
+## GUI:
+install gui/*.php $RPM_BUILD_ROOT/%{_appdir}/gui
+cp -dR gui/{admin,reseller,client,include} $RPM_BUILD_ROOT/%{_appdir}/gui
+rm -f $RPM_BUILD_ROOT/%{_appdir}/gui/{admin,reseller,client,include}/Makefile
+cp -dR gui/{domain_default_page,errordocs,images,themes,tools,orderpanel} $RPM_BUILD_ROOT/%{_appdir}/gui
+
+#%{__make} install \
+#	CC="%{__cc}" \
+#	CFLAGS="%{rpmcflags} -ansi -Wall -Wstrict-prototypes -pedantic" \
+#	INST_PREF=$RPM_BUILD_ROOT \
+#	SYSTEM_ROOT=$RPM_BUILD_ROOT%{_appdir} \
+#	SYSTEM_MAKE_DIRS=$RPM_BUILD_ROOT%{_sbindir}/vhcs2-mkdirs.pl \
+#	SYSTEM_APACHE_BACK_LOG=$RPM_BUILD_ROOT/var/log/archiv/httpd \
+#	CMD_INSTALL="install" \
+#	CMD_MAIL_INSTALL="install" \
+#	CMD_DIR_INSTALL="install -d"
 
 #install config.default.php $RPM_BUILD_ROOT%{_sysconfdir}/config.inc.php
 #ln -sf %{_sysconfdir}/config.inc.php $RPM_BUILD_ROOT%{_appdir}/config.inc.php
@@ -128,7 +171,14 @@ rm -rf $RPM_BUILD_ROOT
 #%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
 #%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
 #%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*.php
-#%dir %{_appdir}
+%dir %{_appdir}
+%dir %{_appdir}/engine
+%dir %attr(700,root,http) %{_appdir}/engine/backup
+%dir %attr(700,root,http) %{_appdir}/engine/quota
+%dir %attr(700,root,http) %{_appdir}/engine/traffic
+%dir %attr(700,root,http) %{_appdir}/engine/messager
+%dir %attr(700,root,http) %{_appdir}/engine/setup
+%dir %attr(700,root,http) %{_appdir}/engine/tools
 #%{_appdir}/css
 #%{_appdir}/themes
 #%{_appdir}/lang
