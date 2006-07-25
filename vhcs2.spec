@@ -7,12 +7,13 @@
 # - generate keys on first start, not on build
 # - change manual building and installing with good fixing of their
 #   build system
+# - use system: Smarty, adodb, not bundled ones
 %include	/usr/lib/rpm/macros.perl
 Summary:	vhcs2 - Virtual Hosting Control System
 Summary(pl):	vhcs2 - system zarz±dzania virtualnymi hostami
 Name:		vhcs2
 Version:	2.4.7.1
-Release:	0.5
+Release:	0.6
 License:	MPL 1.1
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/vhcs/%{name}-%{version}.tar.bz2
@@ -171,18 +172,93 @@ rm -rf $RPM_BUILD_ROOT
 #%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
 #%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
 #%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*.php
+%attr(755,root,root) %{_sbindir}/*
+%attr(751,root,root) /etc/init.d/*
 %dir %{_appdir}
 %dir %{_appdir}/engine
-%dir %attr(700,root,http) %{_appdir}/engine/backup
-%dir %attr(700,root,http) %{_appdir}/engine/quota
-%dir %attr(700,root,http) %{_appdir}/engine/traffic
-%dir %attr(700,root,http) %{_appdir}/engine/messager
-%dir %attr(700,root,http) %{_appdir}/engine/setup
-%dir %attr(700,root,http) %{_appdir}/engine/tools
-#%{_appdir}/css
-#%{_appdir}/themes
-#%{_appdir}/lang
-#%{_appdir}/libraries
-#%{_appdir}/*.css
-#%{_appdir}/*.html
-#%{_appdir}/*.php
+%attr(750,root,http) %{_appdir}/engine/vhcs2*
+%dir %attr(750,root,http) %{_appdir}/engine/backup
+%attr(750,root,http) %{_appdir}/engine/backup/*
+%dir %attr(750,root,http) %{_appdir}/engine/quota
+%attr(750,root,http) %{_appdir}/engine/quota/*
+%dir %attr(750,root,http) %{_appdir}/engine/setup
+%attr(750,root,http) %{_appdir}/engine/setup/*
+%dir %attr(750,root,http) %{_appdir}/engine/tools
+%attr(750,root,http) %{_appdir}/engine/tools/*
+%dir %attr(750,root,http) %{_appdir}/engine/traffic
+%attr(750,root,http) %{_appdir}/engine/traffic/*
+%dir %attr(750,root,http) %{_appdir}/engine/messager
+%attr(750,root,http) %{_appdir}/engine/messager/*
+# GUI to separate package:
+%dir %attr(750,root,http) %{_appdir}/gui
+%{_appdir}/gui/*.php
+%{_appdir}/gui/domain_default_page
+%{_appdir}/gui/errordocs
+%{_appdir}/gui/images
+%{_appdir}/gui/include
+%dir %attr(750,root,http) %{_appdir}/gui/themes
+%{_appdir}/gui/themes/blue
+%{_appdir}/gui/themes/modern_blue
+%dir %attr(750,root,http) %{_appdir}/gui/tools
+
+## Admin panel GUI:
+%dir %attr(750,root,http) %{_appdir}/gui/admin
+%{_appdir}/gui/admin/*.php
+
+## Client panel GUI:
+%dir %attr(750,root,http) %{_appdir}/gui/client
+%{_appdir}/gui/client/*.php
+
+## Orderpanel GUI:
+%dir %attr(750,root,http) %{_appdir}/gui/orderpanel
+%attr(750,root,http) %{_appdir}/gui/orderpanel/*.php
+
+## Reseller GUI:
+%dir %attr(750,root,http) %{_appdir}/gui/reseller
+%attr(750,root,http) %{_appdir}/gui/reseller/*.php
+
+## Filemanager:
+%dir %attr(750,root,http) %{_appdir}/gui/tools/filemanager
+%dir %attr(750,root,http) %{_appdir}/gui/tools/filemanager/tools
+%{_appdir}/gui/tools/filemanager/images
+%dir %attr(750,root,http) %{_appdir}/gui/tools/filemanager/lang
+%{_appdir}/gui/tools/filemanager/lang/*
+%{_appdir}/gui/tools/filemanager/tools/helpdesk
+%{_appdir}/gui/tools/filemanager/tools/*.php
+%{_appdir}/gui/tools/filemanager/themes
+%{_appdir}/gui/tools/filemanager/viewers
+%{_appdir}/gui/tools/filemanager/*.php
+
+## PMA:
+%dir %attr(750,root,http) %{_appdir}/gui/tools/pma
+%{_appdir}/gui/tools/pma/*.php
+%{_appdir}/gui/tools/pma/css
+%dir %attr(750,root,http) %{_appdir}/gui/tools/pma/lang
+# Mark it as separate langs:
+%{_appdir}/gui/tools/pma/lang/*.php
+%{_appdir}/gui/tools/pma/libraries
+%{_appdir}/gui/tools/pma/scripts
+%dir %attr(750,root,http) %{_appdir}/gui/tools/pma/themes
+%{_appdir}/gui/tools/pma/themes/darkblue_orange
+%{_appdir}/gui/tools/pma/themes/original
+
+# Everything for webmail:
+%dir %attr(750,root,http) %{_appdir}/gui/tools/webmail
+%{_appdir}/gui/tools/webmail/*.php
+%{_appdir}/gui/tools/webmail/database
+%{_appdir}/gui/tools/webmail/images
+%{_appdir}/gui/tools/webmail/inc
+%dir %attr(750,root,http) %{_appdir}/gui/tools/webmail/langs
+# Mark it as separate langs:
+%{_appdir}/gui/tools/webmail/langs/*.txt
+# Use separate Smarty, not bundled:
+%{_appdir}/gui/tools/webmail/smarty
+%dir %attr(750,root,http) %{_appdir}/gui/tools/webmail/themes
+%{_appdir}/gui/tools/webmail/themes/basic
+%{_appdir}/gui/tools/webmail/themes/blue
+%{_appdir}/gui/tools/webmail/themes/classic
+%{_appdir}/gui/tools/webmail/themes/green
+%{_appdir}/gui/tools/webmail/themes/hungi.mozilla
+%{_appdir}/gui/tools/webmail/themes/modern_blue
+%{_appdir}/gui/tools/webmail/themes/red
+%{_appdir}/gui/tools/webmail/themes/yellow
