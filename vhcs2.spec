@@ -106,31 +106,31 @@ install configs/init.d/vhcs2_{daemon,network} $RPM_BUILD_ROOT/etc/init.d
 ### ENGINE:
 # Some scripts:
 install engine/traffic/maillogconvert/maillogconvert.pl $RPM_BUILD_ROOT%{_sbindir}
-install engine/vhcs2_common_code.pl $RPM_BUILD_ROOT/%{_appdir}/engine
-install engine/vhcs2-db-keys.pl $RPM_BUILD_ROOT/%{_appdir}/engine
-install engine/vhcs2-db-keys.pl $RPM_BUILD_ROOT/%{_appdir}/engine/messager
-install engine/*-mngr $RPM_BUILD_ROOT/%{_appdir}/engine
-install engine/vhcs2-db-passwd $RPM_BUILD_ROOT/%{_appdir}/engine
+install engine/vhcs2_common_code.pl $RPM_BUILD_ROOT%{_appdir}/engine
+install engine/vhcs2-db-keys.pl $RPM_BUILD_ROOT%{_appdir}/engine
+install engine/vhcs2-db-keys.pl $RPM_BUILD_ROOT%{_appdir}/engine/messager
+install engine/*-mngr $RPM_BUILD_ROOT%{_appdir}/engine
+install engine/vhcs2-db-passwd $RPM_BUILD_ROOT%{_appdir}/engine
 # Backup scripts:
-install engine/backup/vhcs2-bk-task $RPM_BUILD_ROOT/%{_appdir}/engine/backup
-install engine/backup/vhcs2-backup-all $RPM_BUILD_ROOT/%{_appdir}/engine/tools
+install engine/backup/vhcs2-bk-task $RPM_BUILD_ROOT%{_appdir}/engine/backup
+install engine/backup/vhcs2-backup-all $RPM_BUILD_ROOT%{_appdir}/engine/tools
 # Quota script:
-install engine/quota/vhcs2-dsk-quota $RPM_BUILD_ROOT/%{_appdir}/engine/quota
+install engine/quota/vhcs2-dsk-quota $RPM_BUILD_ROOT%{_appdir}/engine/quota
 
-install engine/traffic/*traff{,-SUSE} $RPM_BUILD_ROOT/%{_appdir}/engine/traffic
+install engine/traffic/*traff{,-SUSE} $RPM_BUILD_ROOT%{_appdir}/engine/traffic
 
-install engine/messager/*-msgr $RPM_BUILD_ROOT/%{_appdir}/engine/messager
+install engine/messager/*-msgr $RPM_BUILD_ROOT%{_appdir}/engine/messager
 
 # Setup and administration tools:
-install engine/setup/{*.sh,*setup} $RPM_BUILD_ROOT/%{_appdir}/engine/setup
-install engine/tools/vhcs2-httpd-logs-mngr $RPM_BUILD_ROOT/%{_appdir}/engine/tools
+install engine/setup/{*.sh,*setup} $RPM_BUILD_ROOT%{_appdir}/engine/setup
+install engine/tools/vhcs2-httpd-logs-mngr $RPM_BUILD_ROOT%{_appdir}/engine/tools
 
 ###############
 ## GUI:
-install gui/*.php $RPM_BUILD_ROOT/%{_appdir}/gui
-cp -dR gui/{admin,reseller,client,include} $RPM_BUILD_ROOT/%{_appdir}/gui
-rm -f $RPM_BUILD_ROOT/%{_appdir}/gui/{admin,reseller,client,include}/Makefile
-cp -dR gui/{domain_default_page,errordocs,images,themes,tools,orderpanel} $RPM_BUILD_ROOT/%{_appdir}/gui
+install gui/*.php $RPM_BUILD_ROOT%{_appdir}/gui
+cp -dR gui/{admin,reseller,client,include} $RPM_BUILD_ROOT%{_appdir}/gui
+rm -f $RPM_BUILD_ROOT%{_appdir}/gui/{admin,reseller,client,include}/Makefile
+cp -dR gui/{domain_default_page,errordocs,images,themes,tools,orderpanel} $RPM_BUILD_ROOT%{_appdir}/gui
 
 #%{__make} install \
 #	CC="%{__cc}" \
@@ -173,7 +173,7 @@ rm -rf $RPM_BUILD_ROOT
 #%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
 #%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*.php
 %attr(755,root,root) %{_sbindir}/*
-%attr(751,root,root) /etc/init.d/*
+%attr(754,root,root) /etc/rc.d/init.d/*
 %dir %{_appdir}
 %dir %{_appdir}/engine
 %attr(750,root,http) %{_appdir}/engine/vhcs2*
