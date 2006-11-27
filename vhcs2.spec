@@ -29,10 +29,10 @@ URL:		http://vhcs.net/
 BuildRequires:	rpm-perlprov
 BuildRequires:	rpmbuild(macros) >= 1.268
 #Requires(triggerpostun):	sed >= 4.0
-#Requires:	php
-#Requires:	php-mysql
-#Requires:	php-pcre
+#Requires:	php(mysql)
+#Requires:	php(pcre)
 #Requires:	webapps
+#Requires:	webserver(php)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_appdir		%{_datadir}/%{name}
