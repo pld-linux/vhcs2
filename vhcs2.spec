@@ -97,7 +97,7 @@ install tools/build/vhcs2-mkdirs.pl $RPM_BUILD_ROOT%{_sbindir}
 # daemon binary:
 install tools/daemon/vhcs2_daemon $RPM_BUILD_ROOT%{_sbindir}
 
-# install configów!!!!
+# TODO: install config files!
 
 # init-scripts for daemons:
 install configs/init.d/vhcs2_{daemon,network} $RPM_BUILD_ROOT/etc/init.d
