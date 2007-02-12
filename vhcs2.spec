@@ -10,7 +10,7 @@
 # - use system: Smarty, adodb, not bundled ones
 %include	/usr/lib/rpm/macros.perl
 Summary:	vhcs2 - Virtual Hosting Control System
-Summary(pl):	vhcs2 - system zarz±dzania virtualnymi hostami
+Summary(pl.UTF-8):   vhcs2 - system zarzÄ…dzania virtualnymi hostami
 Name:		vhcs2
 Version:	2.4.7.1
 Release:	0.6
@@ -52,17 +52,17 @@ domains that can be created. At the core of VHCS Pro are 3
 easy-to-use, Web-based control panels. VHCS provides graphic user
 interfaces for the administrators, resellers and users.
 
-%description -l pl
-VHCS dostarcza pe³ne rozwi±zanie do automatycznego hostingu oferuj±c
-znacz±co lepsze bezpieczeñstwo, ca³kowity koszt wykorzystywania i
-wydajno¶æ ni¿ konkurencyjne rozwi±zania komercyjne.
+%description -l pl.UTF-8
+VHCS dostarcza peÅ‚ne rozwiÄ…zanie do automatycznego hostingu oferujÄ…c
+znaczÄ…co lepsze bezpieczeÅ„stwo, caÅ‚kowity koszt wykorzystywania i
+wydajnoÅ›Ä‡ niÅ¼ konkurencyjne rozwiÄ…zania komercyjne.
 
-Przy u¿yciu VHCS Pro mo¿na skonfigurowaæ serwer i aplikacje, stworzyæ
-u¿ytkownika z domenami za pomoc± kilku klikniêæ w czasie poni¿ej
-minuty. Nie ma ograniczeñ co do liczby po¶redników, u¿ytkowników i
-tworzonych domen. Sercem VHCS Pro s± 3 ³atwe w u¿yciu, oparte na WWW
-panele sterowania. VHCS udostêpnia graficzne interfejsy u¿ytkownika
-dla administratorów, po¶redników i u¿ytkowników.
+Przy uÅ¼yciu VHCS Pro moÅ¼na skonfigurowaÄ‡ serwer i aplikacje, stworzyÄ‡
+uÅ¼ytkownika z domenami za pomocÄ… kilku klikniÄ™Ä‡ w czasie poniÅ¼ej
+minuty. Nie ma ograniczeÅ„ co do liczby poÅ›rednikÃ³w, uÅ¼ytkownikÃ³w i
+tworzonych domen. Sercem VHCS Pro sÄ… 3 Å‚atwe w uÅ¼yciu, oparte na WWW
+panele sterowania. VHCS udostÄ™pnia graficzne interfejsy uÅ¼ytkownika
+dla administratorÃ³w, poÅ›rednikÃ³w i uÅ¼ytkownikÃ³w.
 
 %prep
 %setup -q
