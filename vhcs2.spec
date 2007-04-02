@@ -87,7 +87,7 @@ mv -f language-files/README.txt README_language-files.txt
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_sbindir},/var/log/{%{name},archiv/httpd}} \
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_sbindir},/var/log/{%{name},archive/httpd}} \
 	$RPM_BUILD_ROOT{/var/{lib/%{name},mail/virtual},/etc/init.d} \
 	$RPM_BUILD_ROOT%{_appdir}/{gui,engine/{backup,quota,traffic,messager,setup,tools}}
 
