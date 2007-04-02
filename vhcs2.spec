@@ -138,7 +138,7 @@ cp -dR gui/{domain_default_page,errordocs,images,themes,tools,orderpanel} $RPM_B
 #	INST_PREF=$RPM_BUILD_ROOT \
 #	SYSTEM_ROOT=$RPM_BUILD_ROOT%{_appdir} \
 #	SYSTEM_MAKE_DIRS=$RPM_BUILD_ROOT%{_sbindir}/vhcs2-mkdirs.pl \
-#	SYSTEM_APACHE_BACK_LOG=$RPM_BUILD_ROOT/var/log/archiv/httpd \
+#	SYSTEM_APACHE_BACK_LOG=$RPM_BUILD_ROOT/var/log/archive/httpd \
 #	CMD_INSTALL="install" \
 #	CMD_MAIL_INSTALL="install" \
 #	CMD_DIR_INSTALL="install -d"
