@@ -8,7 +8,6 @@
 # - change manual building and installing with good fixing of their
 #   build system
 # - use system: Smarty, adodb, not bundled ones
-%include	/usr/lib/rpm/macros.perl
 Summary:	vhcs2 - Virtual Hosting Control System
 Summary(pl.UTF-8):	vhcs2 - system zarządzania virtualnymi hostami
 Name:		vhcs2
