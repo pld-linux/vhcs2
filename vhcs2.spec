@@ -65,9 +65,9 @@ dla administratorów, pośredników i użytkowników.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+%patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p1
 
 tar -jxvf %{SOURCE10}
 mv vhcs_patch_2006-02-05/gui/include/login.php gui/include/login.php
